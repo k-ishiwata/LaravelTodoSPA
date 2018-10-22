@@ -5,6 +5,7 @@
                 <div v-bind:class="'alert alert-' + alertType" v-if="alertMessage">{{ alertMessage }}</div>
                 <ul>
                     <li><router-link to="/">ホーム</router-link></li>
+                    <li><router-link to="/tasks">タスク</router-link></li>
                     <li v-if="!isLogin"><router-link to="/login">ログイン</router-link></li>
                     <li v-if="isLogin"><router-link to="/user">ユーザー情報</router-link></li>
                     <li @click="logout" v-if="isLogin">ログアウト</li>

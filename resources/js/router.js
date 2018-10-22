@@ -5,11 +5,13 @@ import store from './store/index';
 import Home from './components/pages/Home';
 import Login from './components/pages/Login';
 import User from './components/pages/User';
+import Task from './components/pages/Task';
 
 Vue.use(VueRouter);
 
 const routes = [
     { path: '/', component: Home },
+    { path: '/tasks', component: Task },
     { path: '/login', component: Login },
     { path: '/user', component: User, meta: { requiresAuth: true } }
 ];
