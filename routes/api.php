@@ -27,6 +27,13 @@ Route::post('/login', 'AuthController@login');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/me', 'AuthController@me');
     Route::post('/logout', 'AuthController@logout');
+
+    // Task
+    Route::get('/tasks', 'TasksController@index');
+    Route::get('/tasks/{id}', 'TasksController@findId');
+    Route::post('/tasks', 'TasksController@store');
+    Route::put('/tasks/{id}', 'TasksController@update');
+    Route::delete('/tasks/{id}', 'TasksController@destroy');
 });
 
-Route::resource('tasks', 'TasksController');
+//Route::resource('tasks', 'TasksController');

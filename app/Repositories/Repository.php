@@ -32,7 +32,8 @@ class Repository
      */
     public function store(array $data)
     {
-        return $this->model->store($data);
+//        return $this->model->store($data);
+        return $this->model->create($data);
     }
 
     /**

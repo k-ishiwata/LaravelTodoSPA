@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Repositories\Repository;
+use App\Http\Requests\TaskRequest;
 
 class TasksController extends Controller
 {
@@ -20,11 +21,48 @@ class TasksController extends Controller
     }
 
     /**
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $tasks = $this->repository->all();
         return response()->json($tasks);
+    }
+
+    /**
+     * @param TaskRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(TaskRequest $request)
+    {
+        $response = $this->repository->store($request->all());
+        return response()->json($response, 201);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(TaskRequest $request, int $id)
+    {
+        $response = $this->repository->update($request->all(), $id);
+        return response()->json($response, 200);
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    public function destroy($id)
+    {
+        return $this->repository->delete($id);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function findId($id)
+    {
+        return response()->json($this->repository->findById($id));
     }
 }
