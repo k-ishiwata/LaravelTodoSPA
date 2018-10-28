@@ -19,7 +19,7 @@ class Repository
     }
 
     /**
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all()
     {
@@ -28,18 +28,17 @@ class Repository
 
     /**
      * @param array $data
-     * @return void
+     * @return mixed
      */
     public function store(array $data)
     {
-//        return $this->model->store($data);
         return $this->model->create($data);
     }
 
     /**
      * @param array $data
-     * @param $id
-     * @return void
+     * @param int $id
+     * @return mixed
      */
     public function update(array $data, int $id)
     {
@@ -58,7 +57,7 @@ class Repository
 
     /**
      * @param int $id
-     * @return Model
+     * @return mixed
      */
     public function findById(int $id)
     {

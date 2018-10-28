@@ -30,6 +30,15 @@ class TasksController extends Controller
     }
 
     /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id)
+    {
+        return response()->json($this->repository->findById($id));
+    }
+
+    /**
      * @param TaskRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -55,14 +64,5 @@ class TasksController extends Controller
     public function destroy($id)
     {
         return $this->repository->delete($id);
-    }
-
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function findId($id)
-    {
-        return response()->json($this->repository->findById($id));
     }
 }

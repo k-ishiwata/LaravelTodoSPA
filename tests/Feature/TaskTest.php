@@ -74,7 +74,7 @@ class TaskTest extends TestCase
     /**
      * @test
      */
-    public function FindIdで取得情報は正しいか()
+    public function SHOWで取得情報は正しいか()
     {
         $response = $this->get('api/tasks/1');
         $response->assertJson([

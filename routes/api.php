@@ -29,11 +29,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/logout', 'AuthController@logout');
 
     // Task
-    Route::get('/tasks', 'TasksController@index');
-    Route::get('/tasks/{id}', 'TasksController@findId');
-    Route::post('/tasks', 'TasksController@store');
-    Route::put('/tasks/{id}', 'TasksController@update');
-    Route::delete('/tasks/{id}', 'TasksController@destroy');
+    Route::resource('tasks', 'TasksController',
+        ['only' => ['index', 'show', 'store', 'update', 'destroy']]
+    );
 });
 
 //Route::resource('tasks', 'TasksController');
