@@ -2,14 +2,14 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import auth from "./modules/auth";
-import alert from "./modules/alert";
 import task from "./modules/task";
+import user from "./modules/user";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        auth, alert, task
+        auth, task, user
     },
     strict: true
 });

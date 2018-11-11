@@ -1,48 +1,55 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div v-bind:class="'alert alert-' + alertType" v-if="alertMessage">{{ alertMessage }}</div>
-                <ul>
-                    <li><router-link to="/">ホーム</router-link></li>
-                    <li><router-link to="/tasks">タスク</router-link></li>
-                    <li v-if="!isLogin"><router-link to="/login">ログイン</router-link></li>
-                    <li v-if="isLogin"><router-link to="/user">ユーザー情報</router-link></li>
-                    <li @click="logout" v-if="isLogin">ログアウト</li>
-                </ul>
-                <hr>
-                <router-view></router-view>
-            </div>
-        </div>
+        <el-menu :default-active="activeIndex"
+                 class="el-menu"
+                 mode="horizontal"
+                 v-if="$route.path !== '/login'">
+            <el-menu-item index="1"><router-link to="/">ダッシュボード</router-link></el-menu-item>
+            <el-menu-item index="2"><router-link to="/tasks">タスク</router-link></el-menu-item>
+            <el-submenu index="3" class="nav-user">
+                <template slot="title"><i class="el-icon-menu"></i></template>
+                <el-menu-item index="3-1"><router-link to="/user">ユーザー情報</router-link></el-menu-item>
+                <el-menu-item index="3-2" @click="handleLogout" icon="el-icon-share">ログアウト</el-menu-item>
+            </el-submenu>
+        </el-menu>
+        <router-view class="main"></router-view>
     </div>
 </template>
 
 <script>
-    import { mapGetters, mapActions, mapState } from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
+        data() {
+            return {
+                activeIndex: '1'
+            }
+        },
         computed: {
-            ...mapState('alert', {
-                'alertMessage': 'message',
-                'alertType': 'type'
-            }),
             ...mapGetters('auth', [
                 'isLogin'
             ])
         },
-        /*
-        computed: {
-            // ...mapGetters('auth', [
-            //     'alert'
-            // ])
-
-            // alert() {
-            //     return this.$store.getters['auth/alert'];
-            // }
-        },
-        */
-        methods: mapActions('auth', [
-            'logout'
-        ])
+        methods: {
+            handleLogout() {
+                this.$store.dispatch('auth/logout').then(res => {
+                    if (res === true) {
+                        this.$router.push({path: '/'});
+                    } else {
+                        this.$notify({
+                            title: 'エラー',
+                            message: 'ログアウトに失敗しました。',
+                            type: 'error'
+                        });
+                    }
+                });
+            }
+        }
     }
 </script>
+
+<style>
+    .nav-user.el-submenu {
+        float: right;
+    }
+</style>

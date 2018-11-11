@@ -1,5 +1,5 @@
 <template>
-    <h1>ホーム</h1>
+    <h1>ダッシュボード</h1>
 </template>
 
 <script>

@@ -41,7 +41,7 @@ class TaskTest extends TestCase
         ];
 
         $response = $this->postJson('api/tasks', $task);
-        $response->assertStatus(201);
+        $response->assertStatus(200);
     }
 
     /**
@@ -59,7 +59,7 @@ class TaskTest extends TestCase
     public function tasks_idにDELETEでアクセスできる()
     {
         $response = $this->delete('api/tasks/1');
-        $response->assertStatus(200);
+        $response->assertStatus(204);
     }
 
     /**
@@ -152,10 +152,25 @@ class TaskTest extends TestCase
         $params = [
             'title' => '書き換えたタイトル'
         ];
-        $respose = $this->putJson('api/tasks/1', $params);
+        $response = $this->putJson('api/tasks/1', $params);
 
-        $this->assertTrue($respose->json());
+        $response->assertJsonFragment($params);
+//        $this->assertTrue($respose->json());
         $this->assertDatabaseHas('tasks', $params);
+    }
+    /**
+     * @test
+     */
+    public function UPDATEでデータがない場合はエラー()
+    {
+        $params = [
+            'title' => '書き換えたタイトル'
+        ];
+        $response = $this->putJson('api/tasks/100', $params);
+
+//        dd($response->content());
+
+        $response->assertStatus(500);
     }
 
     /**
@@ -168,5 +183,17 @@ class TaskTest extends TestCase
         ];
         $this->deleteJson('api/tasks/1');
         $this->assertDatabaseMissing('tasks', $params);
+    }
+
+    /**
+     * @test
+     */
+    public function DALETEでデータがない場合エラー()
+    {
+        $this->deleteJson('api/tasks/100')->assertStatus(409);
+
+
+//        dd($response->status());
+
     }
 }

@@ -1,5 +1,3 @@
-import router from '../../router';
-
 const state = {
     token: ''
 };
@@ -20,29 +18,26 @@ const getters = {
 };
 
 const actions = {
-    login ({ commit }, payload) {
-        axios.post('/api/login', {
+    async login ({ commit }, payload) {
+        return await axios.post('/api/login', {
             email: payload.email,
             password: payload.password
         }).then(res => {
             const token = res.data.access_token;
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-
             commit('login', token);
-            router.push({path: '/'});
-            commit('alert/setAlert', { 'message': 'ログインしました。' }, { root: true });
+            return true;
         }).catch(error => {
-            commit('alert/setAlert', { 'message': 'ログインに失敗しました。', 'type': 'danger' }, { root: true });
+            return error.response;
         });
     },
     async logout ({ commit }) {
-        axios.post('/api/logout').then(res => {
+        return await axios.post('/api/logout').then(res => {
             axios.defaults.headers.common['Authorization'] = '';
             commit('logout');
-            router.push({path: '/'});
-            commit('alert/setAlert', { 'message': 'ログアウトしました。' }, { root: true });
+            return true;
         }).catch(error => {
-            commit('alert/setAlert', { 'message': 'ログアウトに失敗しました。' }, { root: true });
+            return error.response;
         });
     }
 };

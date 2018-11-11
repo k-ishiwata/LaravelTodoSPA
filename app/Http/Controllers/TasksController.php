@@ -26,6 +26,7 @@ class TasksController extends Controller
     public function index()
     {
         $tasks = $this->repository->all();
+//        return response()->json($tasks, 200, [], JSON_NUMERIC_CHECK);
         return response()->json($tasks);
     }
 
@@ -45,7 +46,7 @@ class TasksController extends Controller
     public function store(TaskRequest $request)
     {
         $response = $this->repository->store($request->all());
-        return response()->json($response, 201);
+        return response()->json($response);
     }
 
     /**
@@ -54,15 +55,19 @@ class TasksController extends Controller
     public function update(TaskRequest $request, int $id)
     {
         $response = $this->repository->update($request->all(), $id);
-        return response()->json($response, 200);
+        return response()->json($response);
     }
 
     /**
      * @param $id
-     * @return int
+     * @return mixed
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        if ($this->repository->delete($id)) {
+            return response()->json(null, 204);
+        } else {
+            return response()->json(null, 409);
+        }
     }
 }

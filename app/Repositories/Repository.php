@@ -43,12 +43,13 @@ class Repository
     public function update(array $data, int $id)
     {
         $record = $this->model->find($id);
-        return $record->update($data);
+        $record->update($data);
+        return $record;
     }
 
     /**
      * @param int $id
-     * @return int
+     * @return mixed
      */
     public function delete(int $id)
     {

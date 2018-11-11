@@ -1,0 +1,27 @@
+
+// Fonts
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
+//
+//// Variables
+//@import 'variables';
+//
+//// Bootstrap
+//@import '~bootstrap/scss/bootstrap';
+//
+//.navbar-laravel {
+//  background-color: #fff;
+//  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+//}
+
+$--color-text-regular: #333;
+$--color-text-secondary: #555;
+$--table-border-color: #ddd;
+// $--border-color-base: #000;
+// $--select-font-size: 11px;
+$--font-size-base: 12px;
+
+/* icon font path, required */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";
+//@import "base";
