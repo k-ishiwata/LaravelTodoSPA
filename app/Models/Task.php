@@ -19,7 +19,7 @@ class Task extends Model
     protected $casts = [
         'state_id' => 'integer',
         'user_id' => 'integer',
-        'due_at' => 'date'
+        'due_at' => 'datetime'
     ];
 
     /**
@@ -27,14 +27,7 @@ class Task extends Model
      * @var array
      */
     protected $attributes = [
-        'user_id' => null,
+        'user_id' => 0,
         'state_id' => 0,
     ];
-
-//    protected $dates = ['due_at'];
-    // datesで設定したカラムが空だとエラーになる対策
-//    public function getDates()
-//    {
-//        return [];
-//    }
 }

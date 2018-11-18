@@ -1,5 +1,8 @@
+import dayjs from 'dayjs';
+
 const state = {
-    tasks: []
+    tasks: [],
+    filterQuery: {}
 };
 
 const mutations = {
@@ -14,14 +17,46 @@ const mutations = {
     },
     add(state, task) {
         state.tasks.push(task);
+    },
+    setFilterQuery(state, filterQuery) {
+        state.filterQuery = {...filterQuery};
     }
 };
 
 const getters = {
     getTasks (state) {
         return state.tasks;
+    },
+    filteredTasks (state) {
+        let data = state.tasks;
+
+        // タイトルの検索
+        if (state.filterQuery.title !== "") {
+            data = data.filter(function (row) {
+                return row['title'].indexOf(state.filterQuery.title) !== -1;
+            });
+        }
+        // 状態の検索
+        if (state.filterQuery.state_id !== "") {
+            data = data.filter(function (row) {
+                return row['state_id'] === state.filterQuery.state_id;
+            });
+        }
+        // 担当の検索
+        if (state.filterQuery.user_id !== "") {
+            data = data.filter(function (row) {
+                return row['user_id'] === state.filterQuery.user_id
+            });
+        }
+        // 作成日で検索
+        if (state.filterQuery.created_at !== null) {
+            const queryData = dayjs(state.filterQuery.created_at).format('YYYY-MM-DD');
+            data = data.filter(function (row) {
+                return queryData === dayjs(row.created_at).format('YYYY-MM-DD');
+            });
+        }
+        return data;
     }
-    // findTaskById: state => id => find(state.tasks, o => o.id === id)
 };
 
 const actions = {
@@ -32,7 +67,6 @@ const actions = {
     },
     async delete ({state, commit}, task) {
         const index = state.tasks.indexOf(task);
-
         return await axios.delete('/api/tasks/' + task.id)
             .then(res => {
                 commit('delete', index);

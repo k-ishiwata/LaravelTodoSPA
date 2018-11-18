@@ -2,12 +2,64 @@
     <div>
         <el-row justify="space-between">
             <el-col :span="22">
+                <el-form :inline="true" class="search-form">
+                    <el-form-item>
+                        <el-input
+                            v-model="filterQuery.title"
+                            size="small"
+                            placeholder="タイトル"
+                            @change="handleChangeQuery"
+                            clearable></el-input>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-select
+                           v-model="filterQuery.state_id"
+                           size="small"
+                           placeholder="状態"
+                           @change="handleChangeQuery"
+                           clearable>
+                            <el-option
+                                v-for="(item, index) in status"
+                                :key="index"
+                                :label="item.name"
+                                :value="index">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-select
+                            v-model="filterQuery.user_id"
+                            size="small"
+                            placeholder="担当"
+                            @change="handleChangeQuery"
+                            clearable>
+                            <el-option
+                                v-for="item in getUsers"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-date-picker
+                            v-model="filterQuery.created_at"
+                            size="small"
+                            type="date"
+                            placeholder="登録日"
+                            @change="handleChangeQuery">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-form>
             </el-col>
             <el-col :span="2">
                 <el-button type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="handleAddModal()" style="width: 100%;">追加</el-button>
             </el-col>
         </el-row>
-        <el-table :data="getTasks" :row-key="row => row.id" border stripe size="small">
+        <el-table v-if="filteredTasks.length > 0" :data="filteredTasks" :row-key="row => row.id" border stripe size="small">
             <el-table-column prop="id" label="ID" width="60" sortable></el-table-column>
             <el-table-column label="状態" prop="state_id" width="100" sortable>
                 <template slot-scope="scope">
@@ -17,15 +69,19 @@
                 </template>
             </el-table-column>
             <el-table-column prop="title" label="タイトル" width="320"></el-table-column>
-            <el-table-column prop="due_at" label="期日" width="180" sortable></el-table-column>
+            <el-table-column prop="due_at" :formatter="dateTimeFormatter" label="期日" width="180" sortable></el-table-column>
             <el-table-column prop="user_id" :formatter="userFormatter" label="担当" width="100" sortable></el-table-column>
-            <el-table-column label="アクション" fixed="right">
+            <el-table-column prop="created_at" :formatter="dateTimeFormatter" label="登録日" width="180" sortable></el-table-column>
+            <el-table-column label="アクション" fixed="right" width="190">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleEditModal(scope.row)" icon="el-icon-edit-outline">編集</el-button>
                     <el-button size="mini" type="danger" @click="handleDaleteModal(scope.row)" icon="el-icon-delete">削除</el-button>
                 </template>
             </el-table-column>
         </el-table>
+        <div v-else>
+            データはありません。
+        </div>
 
         <el-dialog title="タスクの編集" :visible.sync="isInputModal">
             <el-form ref="form" :model="newTask" label-width="120px">
@@ -44,9 +100,9 @@
                 </el-form-item>
                 <el-form-item label="期日">
                     <el-date-picker
-                            v-model="newTask.due_at"
-                            type="datetime"
-                            value-format="yyyy-MM-dd HH:mm:ss">
+                        v-model="newTask.due_at"
+                        type="datetime"
+                        value-format="yyyy-MM-dd HH:mm:ss">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="担当">
@@ -80,16 +136,22 @@
 </template>
 
 <script>
-    import { mapState, mapGetters, mapActions } from 'vuex'
+    import dayjs from 'dayjs';
+    import { mapGetters, mapActions, mapMutations } from 'vuex'
 
     export default {
         data() {
             return {
+                filterQuery: {
+                    title: "",
+                    state_id: "",
+                    user_id: "",
+                    created_at: null
+                },
                 isInputModal: false,
                 isDeleteModal: false,
                 newTask: {},
                 deleteTask: {},
-                // status: ['未着手','実行中', '完了'],
                 status: [{
                     name: '未着手',
                     color: '#999'
@@ -107,16 +169,19 @@
                 'getUsers', 'getUserById'
             ]),
             ...mapGetters('task', [
-                'getTasks'
+                'getTasks', 'filteredTasks'
             ]),
         },
-
         mounted() {
             this.fetch();
+            this.setFilterQuery(this.filterQuery);
         },
         methods: {
             ...mapActions('task', [
                 'fetch', 'store', 'update', 'delete'
+            ]),
+            ...mapMutations('task', [
+                'setFilterQuery'
             ]),
             // 保存
             handleSave(task) {
@@ -163,8 +228,6 @@
             },
             // 編集モーダル
             handleEditModal(task) {
-                console.log(task);
-
                 this.newTask = Object.assign({}, task);
                 this.isInputModal = true;
             },
@@ -191,18 +254,31 @@
                 });
                 this.isDeleteModal = false;
             },
+            handleChangeQuery() {
+                this.setFilterQuery(this.filterQuery);
+            },
             statusFormatter(row, column) {
                 return this.status[row.state_id];
             },
             userFormatter (row, column) {
                 return this.getUserById(row.user_id);
+            },
+            dateFormatter (row, col) {
+                return dayjs(row.created_at).format('YY/MM/DD');
+            },
+            dateTimeFormatter (row, col) {
+                if (row[col.property]) {
+                    return dayjs(row[col.property]).format('YY/MM/DD HH:mm');
+                }
             }
         }
     }
 </script>
 
-<style>
-    .el-row {
-        margin-bottom: 15px;
+<style scoped lang="scss">
+    .search-form {
+        .el-form-item {
+            margin-bottom: 10px;
+        }
     }
 </style>

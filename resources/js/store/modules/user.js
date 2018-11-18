@@ -1,6 +1,10 @@
 const state = {
     users: [
         {
+            id: 0,
+            name: '未定'
+        },
+        {
             id: 1,
             name: '山田 太郎'
         },
@@ -23,11 +27,7 @@ const getters = {
         const user = state.users.find((user) => {
             return user.id === id
         });
-        if (user) {
-            return user.name;
-        } else {
-            return "";
-        }
+        return user.name
     }
 };
 
