@@ -34,7 +34,7 @@
             handleLogout() {
                 this.$store.dispatch('auth/logout').then(res => {
                     if (res === true) {
-                        this.$router.push({path: '/'});
+                        this.$router.push({path: '/login'});
                     } else {
                         this.$notify({
                             title: 'エラー',
