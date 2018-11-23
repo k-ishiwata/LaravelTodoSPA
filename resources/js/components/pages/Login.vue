@@ -2,8 +2,8 @@
     <div class="login-panel">
         <h1>ログイン</h1>
         <el-form>
-            <el-form-item label="メールアドレス">
-                <el-input type="email" v-model="email" autocomplete="off"></el-input>
+            <el-form-item label="ユーザーネーム">
+                <el-input type="text" v-model="name" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="パスワード">
                 <el-input type="password" v-model="password" autocomplete="off"></el-input>
@@ -17,14 +17,14 @@
 export default {
     data () {
         return {
-            email: 'admin@example.com',
+            name: 'admin',
             password: '123456',
         }
     },
     methods: {
         handleLogin() {
             this.$store.dispatch('auth/login', {
-                email: this.email,
+                name: this.name,
                 password: this.password
             }).then(res => {
                 if (res === true) {

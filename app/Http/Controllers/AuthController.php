@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 class AuthController extends Controller
 {
     function login() {
-        $credentials = request(['email', 'password']);
+        $credentials = request(['name', 'password']);
 
         if (!$token = auth("api")->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);

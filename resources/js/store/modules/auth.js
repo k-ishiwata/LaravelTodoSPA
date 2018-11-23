@@ -20,7 +20,7 @@ const getters = {
 const actions = {
     async login ({ commit }, payload) {
         return await axios.post('/api/login', {
-            email: payload.email,
+            name: payload.name,
             password: payload.password
         }).then(res => {
             const token = res.data.access_token;
