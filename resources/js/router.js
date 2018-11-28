@@ -4,15 +4,17 @@ import store from './store/index';
 
 import Dashboard from './components/pages/Dashboard';
 import Login from './components/pages/Login';
-import User from './components/pages/User';
+import User from './components/pages/user/User';
 import Task from './components/pages/Task';
+import Me from './components/pages/Me';
 
 Vue.use(VueRouter);
 
 const routes = [
     { path: '/', component: Dashboard },
+    { path: '/users', component: User },
     { path: '/tasks', component: Task },
-    { path: '/user', component: User },
+    { path: '/me', component: Me },
     { path: '/login', component: Login, meta: { allowAuth: true } }
 ];
 

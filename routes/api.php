@@ -32,4 +32,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('tasks', 'TasksController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy']]
     );
+
+    // Task
+    Route::resource('users', 'UsersController',
+        ['only' => ['index', 'show', 'store', 'update', 'destroy']]
+    );
 });

@@ -68,10 +68,10 @@
                     </span>
                 </template>
             </el-table-column>
-            <el-table-column prop="title" label="タイトル" width="320"></el-table-column>
-            <el-table-column prop="due_at" :formatter="dateTimeFormatter" label="期日" width="180" sortable></el-table-column>
+            <el-table-column prop="title" label="タイトル"></el-table-column>
+            <el-table-column prop="due_at" :formatter="dateTimeFormatter" label="期日" sortable></el-table-column>
             <el-table-column prop="user_id" :formatter="userFormatter" label="担当" width="100" sortable></el-table-column>
-            <el-table-column prop="created_at" :formatter="dateTimeFormatter" label="登録日" width="180" sortable></el-table-column>
+            <el-table-column prop="created_at" :formatter="dateTimeFormatter" label="登録日" sortable></el-table-column>
             <el-table-column label="アクション" fixed="right" width="190">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleEditModal(scope.row)" icon="el-icon-edit-outline">編集</el-button>
@@ -84,9 +84,12 @@
         </div>
 
         <el-dialog title="タスクの編集" :visible.sync="isInputModal">
-            <el-form ref="form" :model="newTask" label-width="120px">
-                <el-form-item label="タイトル">
-                    <el-input v-model="newTask.title" autocomplete="off"></el-input>
+            <el-form :model="newTask" status-icon ref="newTask" :rules="rules" label-width="120px">
+                <el-form-item label="タイトル" prop="title">
+                    <el-input
+                        v-model="newTask.title"
+                        name="newTask.title"
+                        autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="状態">
                     <el-select v-model="newTask.state_id">
@@ -142,6 +145,12 @@
     export default {
         data() {
             return {
+                rules: {
+                    title: [
+                        { required: true, message: 'タイトルは必ず入力してください。', trigger: 'blur' },
+                        { max: 100, message: '100文字以内で入力してください。' }
+                    ],
+                },
                 filterQuery: {
                     title: "",
                     state_id: "",
@@ -156,7 +165,7 @@
                     name: '未着手',
                     color: '#999'
                 },{
-                    name: '実行中',
+                    name: '進行中',
                     color: '#E6A23C'
                 }, {
                     name: '完了',
@@ -185,41 +194,48 @@
             ]),
             // 保存
             handleSave(task) {
-                // idがあったらupdateなければstore
-                if (task.id) {
-                    this.update(task).then(res => {
-                        if(res === true) {
-                            this.$notify({
-                                title: '成功',
-                                message: 'タスクを更新しました。',
-                                type: 'success'
+                this.$refs['newTask'].validate((valid) => {
+                    // バリデーションエラーがなかったら保存
+                    if (valid) {
+                        // idがあったらupdateなければstore
+                        if (task.id) {
+                            this.update(task).then(res => {
+                                if(res === true) {
+                                    this.$notify({
+                                        title: '成功',
+                                        message: 'タスクを更新しました。',
+                                        type: 'success'
+                                    });
+                                } else {
+                                    this.$notify({
+                                        title: 'エラー',
+                                        message: 'タスクの更新に失敗しました。',
+                                        type: 'error'
+                                    });
+                                }
                             });
                         } else {
-                            this.$notify({
-                                title: 'エラー',
-                                message: 'タスクの更新に失敗しました。',
-                                type: 'error'
+                            this.store(task).then(res => {
+                                if(res === true) {
+                                    this.$notify({
+                                        title: '成功',
+                                        message: 'タスクを追加しました。',
+                                        type: 'success'
+                                    });
+                                } else {
+                                    this.$notify({
+                                        title: 'エラー',
+                                        message: 'タスクの追加に失敗しました。',
+                                        type: 'error'
+                                    });
+                                }
                             });
                         }
-                    });
-                } else {
-                    this.store(task).then(res => {
-                        if(res === true) {
-                            this.$notify({
-                                title: '成功',
-                                message: 'タスクを追加しました。',
-                                type: 'success'
-                            });
-                        } else {
-                            this.$notify({
-                                title: 'エラー',
-                                message: 'タスクの追加に失敗しました。',
-                                type: 'error'
-                            });
-                        }
-                    });
-                }
-                this.isInputModal = false;
+                        this.isInputModal = false;
+                    } else {
+                        return false;
+                    }
+                });
             },
             // 新規作成モーダル
             handleAddModal() {

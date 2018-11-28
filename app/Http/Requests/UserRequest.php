@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TaskRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,15 @@ class TaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:100'
+            'name' => 'required|max:20'
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => 'タイトルは必ず入力してください。',
-            'title.max' => 'タイトルは100文字以内で入力してください。',
+            'name.required' => 'タイトルは必ず入力してください。',
+            'name.max' => 'タイトルは20文字以内で入力してください。',
         ];
     }
 }

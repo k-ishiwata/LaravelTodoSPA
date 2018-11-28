@@ -6,10 +6,11 @@
                  v-if="$route.path !== '/login'">
             <el-menu-item index="1"><router-link to="/">ダッシュボード</router-link></el-menu-item>
             <el-menu-item index="2"><router-link to="/tasks">タスク</router-link></el-menu-item>
-            <el-submenu index="3" class="nav-user">
+            <el-menu-item index="4"><router-link to="/users">ユーザー</router-link></el-menu-item>
+            <el-submenu index="5" class="nav-user">
                 <template slot="title"><i class="el-icon-menu"></i></template>
-                <el-menu-item index="3-1"><router-link to="/user">ユーザー情報</router-link></el-menu-item>
-                <el-menu-item index="3-2" @click="handleLogout" icon="el-icon-share">ログアウト</el-menu-item>
+                <el-menu-item index="5-1"><router-link to="/me">ユーザー情報</router-link></el-menu-item>
+                <el-menu-item index="5-2" @click="handleLogout" icon="el-icon-share">ログアウト</el-menu-item>
             </el-submenu>
         </el-menu>
         <router-view class="main"></router-view>
