@@ -18,6 +18,10 @@ const mutations = {
     add(state, task) {
         state.tasks.push(task);
     },
+    // 全てのタスク削除
+    allDelete(state) {
+        state.tasks = [];
+    },
     setFilterQuery(state, filterQuery) {
         state.filterQuery = {...filterQuery};
     }

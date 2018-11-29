@@ -182,16 +182,23 @@
             ]),
         },
         mounted() {
+            this.userFetch();
             this.fetch();
             this.setFilterQuery(this.filterQuery);
+        },
+        beforeDestroy() {
+            this.allDelete();
         },
         methods: {
             ...mapActions('task', [
                 'fetch', 'store', 'update', 'delete'
             ]),
             ...mapMutations('task', [
-                'setFilterQuery'
+                'allDelete', 'setFilterQuery'
             ]),
+            ...mapActions('user', {
+                userFetch: 'fetch'
+            }),
             // 保存
             handleSave(task) {
                 this.$refs['newTask'].validate((valid) => {

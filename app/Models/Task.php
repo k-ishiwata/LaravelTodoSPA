@@ -18,8 +18,8 @@ class Task extends Model
     /** @var array */
     protected $casts = [
         'state_id' => 'integer',
-        'user_id' => 'integer',
-        'due_at' => 'datetime'
+        'user_id' => 'integer'
+//        'due_at' => 'datetime'
     ];
 
     /**
