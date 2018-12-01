@@ -6,7 +6,7 @@
         <span>タスクID:{{ deleteTask.id }}を削除しますか？</span>
         <span slot="footer" class="dialog-footer">
             <el-button @click="$parent.isDeleteModal = false">キャンセル</el-button>
-            <el-button type="primary" @click="handleDalete">削除</el-button>
+            <el-button type="primary" @click="handleDelete">削除</el-button>
         </span>
     </el-dialog>
 </template>
@@ -28,7 +28,7 @@
                 this.deleteTask = task;
             },
             // 削除
-            handleDalete() {
+            handleDelete() {
                 this.delete(this.deleteTask).then(res => {
                     if(res === true) {
                         this.$notify({

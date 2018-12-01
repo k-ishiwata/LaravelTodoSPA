@@ -27,7 +27,7 @@
             <el-form-item label="担当">
                 <el-select v-model="editTask.user_id" clearable>
                     <el-option
-                        v-for="item in getUsers"
+                        v-for="item in getSingleUsers"
                         :key="item.index"
                         :label="item.name"
                         :value="item.id">
@@ -49,6 +49,12 @@
         data () {
             return {
                 editTask: {},
+                // editTask: {
+                //     title: null,
+                //     state_id: 0,
+                //     due_at: null,
+                //     user_id: null
+                // },
                 rules: {
                     title: [
                         { required: true, message: '必ず入力してください。', trigger: 'blur' },
@@ -59,7 +65,7 @@
         },
         computed: {
             ...mapGetters('user', [
-                'getUsers'
+                'getSingleUsers'
             ]),
         },
         methods: {

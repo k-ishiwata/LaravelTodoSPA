@@ -27,7 +27,7 @@ class Task extends Model
      * @var array
      */
     protected $attributes = [
-        'user_id' => 0,
+        'user_id' => null,
         'state_id' => 0,
     ];
 }

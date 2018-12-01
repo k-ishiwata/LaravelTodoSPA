@@ -12,7 +12,7 @@
             <el-table-column label="アクション" fixed="right" width="190">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleOpenInputModal(scope.row)" icon="el-icon-edit-outline">編集</el-button>
-                    <el-button size="mini" type="danger" @click="handleOpenDeleteMoadl(scope.row)" icon="el-icon-delete">削除</el-button>
+                    <el-button size="mini" type="danger" @click="handleOpenDeleteModal(scope.row)" icon="el-icon-delete">削除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -42,8 +42,12 @@
         },
         computed: {
             ...mapGetters('user', [
-                'getUsers', 'getUserById'
-            ])
+                'getUsers'
+            ]),
+            localGetUsers() {
+                let temp = this.getUsers();
+                return temp.shift();
+            }
         },
         methods: {
             ...mapActions('user', [
@@ -58,7 +62,7 @@
                 this.$refs.inputModal.setUser(user);
                 this.isInputModal = true;
             },
-            handleOpenDeleteMoadl(user) {
+            handleOpenDeleteModal(user) {
                 this.$refs.deleteModal.setUser(user);
                 this.isDeleteModal = true;
             }

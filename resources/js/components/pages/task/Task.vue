@@ -2,7 +2,7 @@
     <div>
         <el-row justify="space-between" class="table-head">
             <el-col :span="22">
-                <search-form :status="status" :users="getUsers"></search-form>
+                <search-form :status="status" :users="getSingleUsers"></search-form>
             </el-col>
             <el-col :span="2">
                 <el-button type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="handleOpenInputModal()" style="width: 100%;">追加</el-button>
@@ -24,7 +24,7 @@
             <el-table-column label="アクション" fixed="right" width="190">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="handleOpenInputModal(scope.row)" icon="el-icon-edit-outline">編集</el-button>
-                    <el-button size="mini" type="danger" @click="handleOpenDeleteMoadl(scope.row)" icon="el-icon-delete">削除</el-button>
+                    <el-button size="mini" type="danger" @click="handleOpenDeleteModal(scope.row)" icon="el-icon-delete">削除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -65,7 +65,7 @@
         },
         computed: {
             ...mapGetters('user', [
-                'getUsers', 'getUserById'
+                'getSingleUsers', 'getUserById'
             ]),
             ...mapGetters('task', [
                 'getTasks', 'filteredTasks'
@@ -75,7 +75,7 @@
             this.userFetch();
             this.fetch();
         },
-        // 遷移時タスクデータ削除
+        // 遷移時データ削除
         beforeDestroy() {
             this.allDelete();
         },
@@ -93,7 +93,7 @@
                 this.$refs.inputModal.setTask(task);
                 this.isInputModal = true;
             },
-            handleOpenDeleteMoadl(task) {
+            handleOpenDeleteModal(task) {
                 this.$refs.deleteModal.setTask(task);
                 this.isDeleteModal = true;
             },
@@ -101,7 +101,11 @@
                 return this.status[row.state_id];
             },
             userFormatter (row, column) {
-                return this.getUserById(row.user_id);
+                if (row.user_id) {
+                    return this.getUserById(row.user_id);
+                } else {
+                    return '未定';
+                }
             },
             dateFormatter (row, col) {
                 return dayjs(row.created_at).format('YY/MM/DD');

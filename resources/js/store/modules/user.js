@@ -24,6 +24,14 @@ const getters = {
     getUsers: (state) => {
         return state.users;
     },
+    // セレクトボックス用のリスト
+    getSingleUsers: (state) => {
+        const unknownUser = [{
+            id: null,
+            name: '未定'
+        }];
+        return  unknownUser.concat(state.users);
+    },
     // idで検索
     getUserById: (state) => (id) => {
         const user = state.users.find((user) => {
