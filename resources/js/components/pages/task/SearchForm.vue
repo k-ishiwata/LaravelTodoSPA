@@ -42,6 +42,22 @@
         </el-form-item>
 
         <el-form-item>
+            <el-select
+                    v-model="filterQuery.project_id"
+                    size="small"
+                    placeholder="プロジェクト"
+                    @change="handleChangeQuery"
+                    clearable>
+                <el-option
+                        v-for="item in projects"
+                        :key="item.id"
+                        :label="item.title"
+                        :value="item.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
+
+        <el-form-item>
             <el-date-picker
                 v-model="filterQuery.created_at"
                 size="small"
@@ -61,6 +77,7 @@
             return {
                 filterQuery: {
                     title: "",
+                    project_id: "",
                     state_id: "",
                     user_id: "",
                     created_at: null
@@ -69,7 +86,8 @@
         },
         props: {
             status: Array,
-            users: Array
+            users: Array,
+            projects: Array
         },
         mounted() {
             this.setFilterQuery(this.filterQuery);

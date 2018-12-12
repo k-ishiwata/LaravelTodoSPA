@@ -2,7 +2,7 @@
     <div>
         <el-row justify="space-between" class="table-head">
             <el-col :span="22">
-                <search-form :status="status" :users="getSingleUsers"></search-form>
+                <search-form :status="status" :users="getSingleUsers" :projects="getProjects"></search-form>
             </el-col>
             <el-col :span="2">
                 <el-button type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="handleOpenInputModal()" style="width: 100%;">追加</el-button>
@@ -20,6 +20,7 @@
             <el-table-column prop="title" label="タイトル"></el-table-column>
             <el-table-column prop="due_at" :formatter="dateTimeFormatter" label="期日" sortable></el-table-column>
             <el-table-column prop="user_id" :formatter="userFormatter" label="担当" width="100" sortable></el-table-column>
+            <el-table-column prop="project_id" :formatter="projectFormatter" label="プロジェクト" sortable></el-table-column>
             <el-table-column prop="created_at" :formatter="dateTimeFormatter" label="登録日" sortable></el-table-column>
             <el-table-column label="アクション" fixed="right" width="190">
                 <template slot-scope="scope">
@@ -67,12 +68,16 @@
             ...mapGetters('user', [
                 'getSingleUsers', 'getUserById'
             ]),
+            ...mapGetters('project', [
+                'getProjects', 'getProjectById'
+            ]),
             ...mapGetters('task', [
                 'getTasks', 'filteredTasks'
             ]),
         },
         mounted() {
             this.userFetch();
+            this.projectFetch();
             this.fetch();
         },
         // 遷移時データ削除
@@ -88,6 +93,9 @@
             ]),
             ...mapActions('user', {
                 userFetch: 'fetch'
+            }),
+            ...mapActions('project', {
+                projectFetch: 'fetch'
             }),
             handleOpenInputModal(task = {}) {
                 this.$refs.inputModal.setTask(task);
@@ -106,6 +114,9 @@
                 } else {
                     return '未定';
                 }
+            },
+            projectFormatter (row, column) {
+                return this.getProjectById(row.project_id);
             },
             dateFormatter (row, col) {
                 return dayjs(row.created_at).format('YY/MM/DD');

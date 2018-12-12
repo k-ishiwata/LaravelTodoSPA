@@ -28,13 +28,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/me', 'AuthController@me');
     Route::post('/logout', 'AuthController@logout');
 
-    // Task
     Route::resource('tasks', 'TasksController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy']]
     );
 
-    // Task
     Route::resource('users', 'UsersController',
+        ['only' => ['index', 'show', 'store', 'update', 'destroy']]
+    );
+
+    Route::resource('projects', 'ProjectsController',
         ['only' => ['index', 'show', 'store', 'update', 'destroy']]
     );
 });

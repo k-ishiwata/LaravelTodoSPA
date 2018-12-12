@@ -6,6 +6,7 @@ import Dashboard from './components/pages/Dashboard';
 import Login from './components/pages/Login';
 import User from './components/pages/user/User';
 import Task from './components/pages/task/Task';
+import Project from './components/pages/project/List';
 import Me from './components/pages/Me';
 
 Vue.use(VueRouter);
@@ -14,6 +15,7 @@ const routes = [
     { path: '/', component: Dashboard },
     { path: '/users', component: User },
     { path: '/tasks', component: Task },
+    { path: '/projects', component: Project },
     { path: '/me', component: Me },
     { path: '/login', component: Login, meta: { allowAuth: true } }
 ];

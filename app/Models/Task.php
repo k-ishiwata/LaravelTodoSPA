@@ -12,13 +12,14 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'state_id', 'user_id', 'due_at'
+        'title', 'state_id', 'user_id', 'due_at', 'project_id'
     ];
 
     /** @var array */
     protected $casts = [
         'state_id' => 'integer',
-        'user_id' => 'integer'
+        'user_id' => 'integer',
+        'project_id' => 'integer'
 //        'due_at' => 'datetime'
     ];
 
@@ -29,5 +30,6 @@ class Task extends Model
     protected $attributes = [
         'user_id' => null,
         'state_id' => 0,
+        'project_id' => 1
     ];
 }

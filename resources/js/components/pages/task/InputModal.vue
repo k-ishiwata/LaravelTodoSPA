@@ -34,6 +34,16 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="プロジェクト">
+                <el-select v-model="editTask.project_id" clearable>
+                    <el-option
+                            v-for="item in getProjects"
+                            :key="item.index"
+                            :label="item.title"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
                 <el-button @click="$parent.isInputModal = false">キャンセル</el-button>
@@ -49,12 +59,6 @@
         data () {
             return {
                 editTask: {},
-                // editTask: {
-                //     title: null,
-                //     state_id: 0,
-                //     due_at: null,
-                //     user_id: null
-                // },
                 rules: {
                     title: [
                         { required: true, message: '必ず入力してください。', trigger: 'blur' },
@@ -67,6 +71,9 @@
             ...mapGetters('user', [
                 'getSingleUsers'
             ]),
+            ...mapGetters('project', [
+                'getProjects'
+            ])
         },
         methods: {
             ...mapActions('task', [

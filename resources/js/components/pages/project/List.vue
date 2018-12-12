@@ -3,11 +3,9 @@
         <div class="table-head">
             <el-button type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="handleOpenInputModal()">追加</el-button>
         </div>
-        <el-table :data="getUsers" :row-key="row => row.id" border stripe size="small">
+        <el-table :data="getProjects" :row-key="row => row.id" border stripe size="small">
             <el-table-column prop="id" label="ID" width="60" sortable></el-table-column>
-            <el-table-column prop="login_id" label="ログインID"></el-table-column>
-            <el-table-column prop="name" label="名前"></el-table-column>
-            <el-table-column prop="email" label="メールアドレス"></el-table-column>
+            <el-table-column prop="title" label="プロジェクト名"></el-table-column>
             <el-table-column prop="created_at" :formatter="dateTimeFormatter" label="登録日" width="180" sortable></el-table-column>
             <el-table-column label="アクション" fixed="right" width="190">
                 <template slot-scope="scope">
@@ -41,12 +39,12 @@
             this.fetch();
         },
         computed: {
-            ...mapGetters('user', [
-                'getUsers'
+            ...mapGetters('project', [
+                'getProjects'
             ])
         },
         methods: {
-            ...mapActions('user', [
+            ...mapActions('project', [
                 'fetch'
             ]),
             dateTimeFormatter(row, col) {
@@ -54,12 +52,12 @@
                     return dayjs(row[col.property]).format('YY/MM/DD HH:mm');
                 }
             },
-            handleOpenInputModal(user = {}) {
-                this.$refs.inputModal.setUser(user);
+            handleOpenInputModal(project = {}) {
+                this.$refs.inputModal.setProject(project);
                 this.isInputModal = true;
             },
-            handleOpenDeleteModal(user) {
-                this.$refs.deleteModal.setUser(user);
+            handleOpenDeleteModal(project) {
+                this.$refs.deleteModal.setProject(project);
                 this.isDeleteModal = true;
             }
         }

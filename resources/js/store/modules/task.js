@@ -52,6 +52,12 @@ const getters = {
                 return row['user_id'] === state.filterQuery.user_id
             });
         }
+        // プロジェクトの検索
+        if (state.filterQuery.project_id !== "") {
+            data = data.filter(function (row) {
+                return row['project_id'] === state.filterQuery.project_id
+            });
+        }
         // 作成日で検索
         if (state.filterQuery.created_at !== null) {
             const queryData = dayjs(state.filterQuery.created_at).format('YYYY-MM-DD');

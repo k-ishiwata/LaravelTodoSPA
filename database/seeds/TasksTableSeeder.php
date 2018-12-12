@@ -17,6 +17,7 @@ class TasksTableSeeder extends Seeder
                 'state_id' => 1,
                 'user_id' => 1,
                 'due_at' => '2018-10-02 14:28:19',
+                'project_id' => 1,
                 'created_at' => '2018-10-02 14:28:19',
                 'updated_at' => '2018-10-02 14:28:19'
             ],[
@@ -24,6 +25,7 @@ class TasksTableSeeder extends Seeder
                 'state_id' => 2,
                 'user_id' => 1,
                 'due_at' => '',
+                'project_id' => 2,
                 'created_at' => '2018-10-04 14:28:19',
                 'updated_at' => '2018-10-04 14:28:19'
             ]

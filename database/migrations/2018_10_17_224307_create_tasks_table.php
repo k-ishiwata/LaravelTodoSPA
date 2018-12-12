@@ -19,6 +19,7 @@ class CreateTasksTable extends Migration
             $table->integer('state_id')->unsigned()->default(0);
             $table->integer('user_id')->references('id')->on('users')->unsigned()->index()->nullable();
             $table->timestamp('due_at')->nullable()->comment('期日');
+            $table->integer('project_id')->references('id')->on('projects')->unsigned()->index()->nullable();
             $table->timestamps();
         });
     }
