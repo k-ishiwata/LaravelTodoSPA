@@ -12,12 +12,12 @@ import Me from './components/pages/Me';
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', component: Dashboard },
-    { path: '/users', component: User },
-    { path: '/tasks', component: Task },
-    { path: '/projects', component: Project },
-    { path: '/me', component: Me },
-    { path: '/login', component: Login, meta: { allowAuth: true } }
+    { path: '/', name: 'dashboard', component: Dashboard },
+    { path: '/users', name: 'users', component: User },
+    { path: '/tasks', name: 'tasks', component: Task },
+    { path: '/projects', name: 'projects', component: Project },
+    { path: '/me', name: 'me', component: Me },
+    { path: '/login', name: 'login', component: Login, meta: { allowAuth: true } }
 ];
 
 const router = new VueRouter({

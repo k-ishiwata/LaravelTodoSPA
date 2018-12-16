@@ -1,17 +1,20 @@
 <template>
     <div class="container">
-        <el-menu :default-active="activeIndex"
-                 class="el-menu"
-                 mode="horizontal"
-                 v-if="$route.path !== '/login'">
-            <el-menu-item index="1"><router-link to="/">ダッシュボード</router-link></el-menu-item>
-            <el-menu-item index="2"><router-link to="/tasks">タスク</router-link></el-menu-item>
-            <el-menu-item index="6"><router-link to="/projects">プロジェクト</router-link></el-menu-item>
-            <el-menu-item index="4"><router-link to="/users">ユーザー</router-link></el-menu-item>
+        <!-- メニューはログイン画面では表示しない -->
+        <el-menu
+            :default-active="activeIndex"
+            mode="horizontal"
+            :router="true"
+            class="el-menu"
+            v-if="$route.path !== '/login'">
+            <el-menu-item index="dashboard" :route="{ name:'dashboard' }">ダッシュボード</el-menu-item>
+            <el-menu-item index="tasks" :route="{ name:'tasks' }">タスク</el-menu-item>
+            <el-menu-item index="projects" :route="{ name:'projects' }">プロジェクト</el-menu-item>
+            <el-menu-item index="users" :route="{ name:'users' }">ユーザー</el-menu-item>
             <el-submenu index="5" class="nav-user">
                 <template slot="title"><i class="el-icon-menu"></i></template>
-                <el-menu-item index="5-1"><router-link to="/me">ユーザー情報</router-link></el-menu-item>
-                <el-menu-item index="5-2" @click="handleLogout" icon="el-icon-share">ログアウト</el-menu-item>
+                <el-menu-item index="me" :route="{ name:'me' }">ユーザー情報</el-menu-item>
+                <el-menu-item index="logout"  @click="handleLogout" icon="el-icon-share">ログアウト</el-menu-item>
             </el-submenu>
         </el-menu>
         <router-view class="main"></router-view>
@@ -24,8 +27,12 @@
     export default {
         data() {
             return {
-                activeIndex: '1'
+                activeIndex: ''
             }
+        },
+        mounted() {
+            // 読み込まれたページをアクティブ
+            this.activeIndex = this.$route.name;
         },
         computed: {
             ...mapGetters('auth', [

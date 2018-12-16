@@ -8,7 +8,10 @@
                 <el-button type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="handleOpenInputModal()" style="width: 100%;">追加</el-button>
             </el-col>
         </el-row>
-        <el-table v-if="filteredTasks.length > 0" :data="filteredTasks" :row-key="row => row.id" border stripe size="small">
+        <el-table
+                :data="filteredTasks"
+                :row-key="row => row.id"
+                border stripe size="small">
             <el-table-column prop="id" label="ID" width="60" sortable></el-table-column>
             <el-table-column label="状態" prop="state_id" width="100" sortable>
                 <template slot-scope="scope">
@@ -29,9 +32,6 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div v-else>
-            データはありません。
-        </div>
         <input-modal ref="inputModal"></input-modal>
         <delete-modal ref="deleteModal"></delete-modal>
     </div>
@@ -58,7 +58,7 @@
                 }, {
                     name: '完了',
                     color: '#67C23A'
-                }],
+                }]
             }
         },
         components: {
@@ -76,8 +76,8 @@
             ]),
         },
         mounted() {
-            this.userFetch();
             this.projectFetch();
+            this.userFetch();
             this.fetch();
         },
         // 遷移時データ削除
